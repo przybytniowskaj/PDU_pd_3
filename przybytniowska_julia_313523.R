@@ -10,8 +10,6 @@ if ( options()$stringsAsFactors )
 Posts <- read.csv("gaming.stackexchange.com/Posts.xml.csv")
 PostHistory <- read.csv("gaming.stackexchange.com/PostHistory.xml.csv")
 
-View(Posts)
-View(PostHistory)
 
 #Wykres przedstawiający jaka liczba postów została napisana o xbox a jaka o ps(1,2,3,4 lub 5) 
 #w poszczególnych latach zaczynając na 2017 konczac na 2020 
@@ -65,9 +63,3 @@ data <- data.frame(Rok, Urzadzenie, LiczbaWyszukan)
 
 ggplot(data, aes(fill=Urzadzenie, y=LiczbaWyszukan, x=Rok)) +
   geom_bar(position="stack", stat="identity") + scale_fill_manual("Urzadzenie", values = c("PlayStation" = "lightblue", "Xbox" = "darkblue"))
-
-
-Posts <- read.csv("crypto.stackexchange.com/Posts.xml.csv")
-Users <- read.csv("crypto.stackexchange.com/Users.xml.csv")
-Comments <- read.csv("crypto.stackexchange.com/Comments.xml.csv")
-View(Posts)
