@@ -81,30 +81,29 @@ viewsBuddhism <- tidyr::separate(PostsBuddhism, CreationDate, c('Rok', 'Miesiac'
   filter(PostTypeId == 1)%>%
   group_by(Rok, Miesiac)%>%  
   summarize(WyswietleniaBuddyzm = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
-  unite("Miesiac-Rok",Miesiac, Rok, sep = "-", remove = TRUE)
+  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")
 
 viewsIslam <- tidyr::separate(PostsIslam, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
   filter(PostTypeId == 1)%>%
   group_by(Rok, Miesiac)%>%  
   summarize(WyswietleniaIslam = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
-  unite("Miesiac-Rok",Miesiac, Rok, sep = "-", remove = TRUE)
+  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")
 
 viewsJudaism <- tidyr::separate(PostsJudaism, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
   filter(PostTypeId ==1)%>%
   group_by(Rok, Miesiac)%>%  
   summarize(WyswietleniaJudaizm = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
-  unite("Miesiac-Rok",Miesiac, Rok, sep = "-", remove = TRUE)
+  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")
 
 viewsHinduism <- tidyr::separate(PostsHinduism, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
   filter(PostTypeId ==1)%>%
   group_by(Rok, Miesiac)%>%  
   summarize(WyswietleniaHinduizm = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
-  unite("Miesiac-Rok",Miesiac, Rok, sep = "-", remove = TRUE)
+  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")
 
 viewsChristianity <- tidyr::separate(PostsChristianity, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
   filter(PostTypeId ==1)%>%
   group_by(Rok, Miesiac)%>%  
   summarize(WyswietleniaChrzescjanstwo = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
-  unite("Miesiac-Rok",Miesiac, Rok, sep = "-", remove = TRUE)
-
+  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")
 
