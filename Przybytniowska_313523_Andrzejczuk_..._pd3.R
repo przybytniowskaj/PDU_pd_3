@@ -3,14 +3,23 @@ library(magrittr)
 library(stringr)
 library(ggplot2)
 library(wesanderson)
+library(tidyr)
 
 if ( options()$stringsAsFactors )
   options(stringsAsFactors=FALSE)
 
+# Ramki danych do pytania 2:
 Posts <- read.csv("gaming.stackexchange.com/Posts.xml.csv")
 PostHistory <- read.csv("gaming.stackexchange.com/PostHistory.xml.csv")
+  
+# Ramki danych do pytania 3:
+PostsBuddhism <- read.csv("buddhism.stackexchange.com/Posts.xml.csv")
+PostsIslam <- read.csv("islam.stackexchange.com/Posts.xml.csv")
+PostsJudaism <- read.csv("judaism.stackexchange.com/Posts.xml.csv")
+PostsHinduism <- read.csv("hinduism.stackexchange.com/Posts.xml.csv")
+PostsChristianity <- read.csv("christianity.stackexchange.com/Posts.xml.csv")
 
-
+#Pytanie 2:
 #Wykres przedstawiający jaka liczba postów została napisana o xbox a jaka o ps(1,2,3,4 lub 5) 
 #w poszczególnych latach zaczynając na 2017 konczac na 2020 
 
@@ -63,3 +72,39 @@ data <- data.frame(Rok, Urzadzenie, LiczbaWyszukan)
 
 ggplot(data, aes(fill=Urzadzenie, y=LiczbaWyszukan, x=Rok)) +
   geom_bar(position="stack", stat="identity") + scale_fill_manual("Urzadzenie", values = c("PlayStation" = "lightblue", "Xbox" = "darkblue"))
+
+#Pytanie 3:
+# Jak zmieniała sie popularnosc/suma liczby wyswietlen postow dotyczacych wybranych religii 
+# na przestrzeni lat 2014-2021
+
+viewsBuddhism <- tidyr::separate(PostsBuddhism, CreationDate, c('Rok', 'Miesiac', "theRest"), sep = "-",remove = FALSE)%>%
+  filter(PostTypeId == 1)%>%
+  group_by(Rok, Miesiac)%>%  
+  summarize(WyswietleniaBuddyzm = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
+  unite("Miesiac-Rok",Miesiac, Rok, sep = "-", remove = TRUE)
+
+viewsIslam <- tidyr::separate(PostsIslam, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
+  filter(PostTypeId == 1)%>%
+  group_by(Rok, Miesiac)%>%  
+  summarize(WyswietleniaIslam = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
+  unite("Miesiac-Rok",Miesiac, Rok, sep = "-", remove = TRUE)
+
+viewsJudaism <- tidyr::separate(PostsJudaism, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
+  filter(PostTypeId ==1)%>%
+  group_by(Rok, Miesiac)%>%  
+  summarize(WyswietleniaJudaizm = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
+  unite("Miesiac-Rok",Miesiac, Rok, sep = "-", remove = TRUE)
+
+viewsHinduism <- tidyr::separate(PostsHinduism, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
+  filter(PostTypeId ==1)%>%
+  group_by(Rok, Miesiac)%>%  
+  summarize(WyswietleniaHinduizm = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
+  unite("Miesiac-Rok",Miesiac, Rok, sep = "-", remove = TRUE)
+
+viewsChristianity <- tidyr::separate(PostsChristianity, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
+  filter(PostTypeId ==1)%>%
+  group_by(Rok, Miesiac)%>%  
+  summarize(WyswietleniaChrzescjanstwo = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
+  unite("Miesiac-Rok",Miesiac, Rok, sep = "-", remove = TRUE)
+
+
