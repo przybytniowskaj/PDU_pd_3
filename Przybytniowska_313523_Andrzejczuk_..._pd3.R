@@ -113,7 +113,7 @@ ui <- fluidPage(
   
   titlePanel("Praca domowa nr 3"),
 
-  fluidRow(
+  sidebarLayout(
     sidebarPanel(
           width = 7,
           height = 5,
@@ -128,10 +128,14 @@ ui <- fluidPage(
                                       "Pytanie 3" = 3),
                        selected = 1)
            )
+  ),
+  mainPanel(
+    width = 15,
+    plotOutput("plot")
   )
 )
+
 
 server <- function(input, output) {}
 
 shinyApp(ui = ui, server = server)
-
