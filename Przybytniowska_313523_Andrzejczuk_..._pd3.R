@@ -4,6 +4,7 @@ library(stringr)
 library(ggplot2)
 library(wesanderson)
 library(tidyr)
+library(plotly)
 
 if ( options()$stringsAsFactors )
   options(stringsAsFactors=FALSE)
@@ -11,6 +12,10 @@ if ( options()$stringsAsFactors )
 # Ramki danych do pytania 1:
 Posts <- read.csv("gaming.stackexchange.com/Posts.xml.csv")
 PostHistory <- read.csv("gaming.stackexchange.com/PostHistory.xml.csv")
+
+#Ramki danych do pytania 2:
+Users<-read.csv("Mus/Users.xml.csv")
+Posts<-read.csv("Mus/Posts.xml.csv")
   
 # Ramki danych do pytania 3:
 PostsBuddhism <- read.csv("buddhism.stackexchange.com/Posts.xml.csv")
@@ -72,6 +77,78 @@ data <- data.frame(Rok, Urzadzenie, LiczbaWyszukan)
 
 ggplot(data, aes(fill=Urzadzenie, y=LiczbaWyszukan, x=Rok)) +
   geom_bar(position="stack", stat="identity") + scale_fill_manual("Urzadzenie", values = c("PlayStation" = "lightblue", "Xbox" = "darkblue"))
+
+#Pytanie 2:
+# Wykres przedstawiający ilość postów o konkretnych instrumentach (pianino, skrzypce, gitara, bębny) w Niemczech i Francji
+
+tab1 <- Posts %>% filter(Score > 0)
+tab2 <- Users  %>% 
+        filter(str_detect(Location, "Germany")) %>% 
+        select("Id")
+tab3 <- Users  %>% 
+  filter(str_detect(Location, "France")) %>% 
+  select("Id")
+
+piano <- (tab1 %>%
+  filter(str_detect(Tags, "piano")) %>%
+  inner_join(tab2, by = c("OwnerUserId" = "Id")) %>%
+  tally())[1, 1]
+ 
+
+violin <- (tab1 %>%
+  filter(str_detect(Tags, "violin")) %>%
+  inner_join(tab2, by = c("OwnerUserId" = "Id")) %>%
+  tally())[1, 1]
+
+guitar <- (tab1 %>%
+  filter(str_detect(Tags, "guitar")) %>%
+  inner_join(tab2, by = c("OwnerUserId" = "Id")) %>%
+  tally())[1, 1]
+
+drums <- (tab1 %>%
+  filter(str_detect(Tags, "drums")) %>%
+  inner_join(tab2, by = c("OwnerUserId" = "Id")) %>%
+  tally())[1, 1]
+
+piano2 <- (tab1 %>%
+  filter(str_detect(Tags, "piano")) %>%
+  inner_join(tab3, by = c("OwnerUserId" = "Id")) %>%
+  tally())[1, 1]
+
+
+violin2 <- (tab1 %>%
+  filter(str_detect(Tags, "violin")) %>%
+  inner_join(tab3, by = c("OwnerUserId" = "Id")) %>%
+  tally())[1, 1]
+
+guitar2 <- (tab1 %>%
+  filter(str_detect(Tags, "guitar")) %>%
+  inner_join(tab3, by = c("OwnerUserId" = "Id")) %>%
+  tally())[1, 1]
+
+drums2 <- (tab1 %>%
+  filter(str_detect(Tags, "drums")) %>%
+  inner_join(tab3, by = c("OwnerUserId" = "Id")) %>%
+  tally())[1, 1]
+
+liczba_wyszukan <- c(piano, violin, guitar, drums, piano2, violin2, guitar2, drums2)
+
+instrumenty <- c("pianino", "skrzypce", "gitara", "bębny", "pianino", "skrzypce", "gitara", "bębny")
+
+Kraj <- c("Niemcy", "Niemcy", "Niemcy", "Niemcy", "Francja", "Francja", "Francja", "Francja")
+
+
+tabela <- data_frame(liczba_wyszukan, instrumenty, Kraj)
+
+wykres <- ggplot(tabela, aes(x=instrumenty, y=liczba_wyszukan, fill=Kraj)) +
+  geom_col(position = "dodge") +labs(y= "Liczba wyszukań") + 
+  theme(legend.background = element_rect(fill="white",
+   size=0.5, linetype="solid", 
+   colour ="black")) 
+ggplotly(wykres)
+
+  
+
 
 #Pytanie 3:
 # Jak zmieniała sie popularnosc/suma liczby wyswietlen postow dotyczacych wybranych religii 
