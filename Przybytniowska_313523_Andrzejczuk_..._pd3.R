@@ -107,3 +107,31 @@ viewsChristianity <- tidyr::separate(PostsChristianity, CreationDate, c('Rok', '
   summarize(WyswietleniaChrzescjanstwo = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
   unite("Miesiac-Rok",Miesiac, Rok, sep = "-")
 
+
+# Aplikacja webowa przedstawiająca wyniki:
+ui <- fluidPage(
+  
+  titlePanel("Praca domowa nr 3"),
+
+  fluidRow(
+    sidebarPanel(
+          width = 7,
+          height = 5,
+          h4("Wykonały: Maja Andrzejczuk i Julia Przybytniowska"),
+          h6("20.05.2021 - 5.06.2021")
+        ),
+    column(3,
+           selectInput("selectBox",
+                       h3('Pytanie: '),
+                       choices = list("Pytanie 1" = 1,
+                                      "Pytanie 2" = 2,
+                                      "Pytanie 3" = 3),
+                       selected = 1)
+           )
+  )
+)
+
+server <- function(input, output) {}
+
+shinyApp(ui = ui, server = server)
+
