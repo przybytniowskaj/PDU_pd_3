@@ -86,37 +86,45 @@ vecC <- rep("Chrzescjanizm", 115)
 viewsBuddhism <- tidyr::separate(PostsBuddhism, CreationDate, c('Rok', 'Miesiac', "theRest"), sep = "-",remove = FALSE)%>%
   filter(PostTypeId == 1)%>%
   group_by(Rok, Miesiac)%>%  
-  summarize(WyswietleniaBuddyzm = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
+  summarize(Wyswietlenia = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
   unite("Miesiac-Rok",Miesiac, Rok, sep = "-")%>%
-  cbind(vecB)
+  mutate(Religia = vecB)
 
 viewsIslam <- tidyr::separate(PostsIslam, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
   filter(PostTypeId == 1)%>%
   group_by(Rok, Miesiac)%>%  
-  summarize(WyswietleniaIslam = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
+  summarize(Wyswietlenia = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
   unite("Miesiac-Rok",Miesiac, Rok, sep = "-")%>%
-  cbind(vecI)
+  mutate(Religia = vecI)
 
 viewsJudaism <- tidyr::separate(PostsJudaism, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
   filter(PostTypeId ==1)%>%
   group_by(Rok, Miesiac)%>%  
-  summarize(WyswietleniaJudaizm = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
+  summarize(Wyswietlenia = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
   unite("Miesiac-Rok",Miesiac, Rok, sep = "-")%>%
-  cbind(vecJ)
+  mutate(Religia = vecJ)
 
 viewsHinduism <- tidyr::separate(PostsHinduism, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
   filter(PostTypeId ==1)%>%
   group_by(Rok, Miesiac)%>%  
-  summarize(WyswietleniaHinduizm = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
+  summarize(Wyswietlenia = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
   unite("Miesiac-Rok",Miesiac, Rok, sep = "-")%>%
-  cbind(vecH)
+  mutate(Religia = vecH)
 
 viewsChristianity <- tidyr::separate(PostsChristianity, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
   filter(PostTypeId ==1)%>%
   group_by(Rok, Miesiac)%>%  
-  summarize(WyswietleniaChrzescjanstwo = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
+  summarize(Wyswietlenia = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
   unite("Miesiac-Rok",Miesiac, Rok, sep = "-")%>%
-  cbind(vecC)
+  mutate(Religia = vecC)
+
+Wyswietlenia <- full_join(viewsBuddhism, viewsIslam) %>% 
+  full_join(viewsChristianity) %>% 
+  full_join(viewsHinduism) %>% 
+  full_join(viewsJudaism)
+
+
+
 
 # Aplikacja webowa przedstawiająca wyniki:
 ui <- fluidPage(
