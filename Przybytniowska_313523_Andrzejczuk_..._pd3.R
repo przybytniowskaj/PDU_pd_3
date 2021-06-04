@@ -8,7 +8,7 @@ library(tidyr)
 if ( options()$stringsAsFactors )
   options(stringsAsFactors=FALSE)
 
-# Ramki danych do pytania 2:
+# Ramki danych do pytania 1:
 Posts <- read.csv("gaming.stackexchange.com/Posts.xml.csv")
 PostHistory <- read.csv("gaming.stackexchange.com/PostHistory.xml.csv")
   
@@ -19,7 +19,7 @@ PostsJudaism <- read.csv("judaism.stackexchange.com/Posts.xml.csv")
 PostsHinduism <- read.csv("hinduism.stackexchange.com/Posts.xml.csv")
 PostsChristianity <- read.csv("christianity.stackexchange.com/Posts.xml.csv")
 
-#Pytanie 2:
+#Pytanie 1:
 #Wykres przedstawiający jaka liczba postów została napisana o xbox a jaka o ps(1,2,3,4 lub 5) 
 #w poszczególnych latach zaczynając na 2017 konczac na 2020 
 
