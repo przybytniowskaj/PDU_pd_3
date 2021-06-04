@@ -77,36 +77,46 @@ ggplot(data, aes(fill=Urzadzenie, y=LiczbaWyszukan, x=Rok)) +
 # Jak zmieniała sie popularnosc/suma liczby wyswietlen postow dotyczacych wybranych religii 
 # na przestrzeni lat 2014-2021
 
+vecB <- rep("Buddyzm", 81)
+vecI <- rep("Islam", 105)
+vecJ <- rep("Judaizm", 135)
+vecH <- rep("Hinduizm", 81)
+vecC <- rep("Chrzescjanizm", 115)
+
 viewsBuddhism <- tidyr::separate(PostsBuddhism, CreationDate, c('Rok', 'Miesiac', "theRest"), sep = "-",remove = FALSE)%>%
   filter(PostTypeId == 1)%>%
   group_by(Rok, Miesiac)%>%  
   summarize(WyswietleniaBuddyzm = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
-  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")
+  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")%>%
+  cbind(vecB)
 
 viewsIslam <- tidyr::separate(PostsIslam, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
   filter(PostTypeId == 1)%>%
   group_by(Rok, Miesiac)%>%  
   summarize(WyswietleniaIslam = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
-  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")
+  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")%>%
+  cbind(vecI)
 
 viewsJudaism <- tidyr::separate(PostsJudaism, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
   filter(PostTypeId ==1)%>%
   group_by(Rok, Miesiac)%>%  
   summarize(WyswietleniaJudaizm = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
-  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")
+  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")%>%
+  cbind(vecJ)
 
 viewsHinduism <- tidyr::separate(PostsHinduism, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
   filter(PostTypeId ==1)%>%
   group_by(Rok, Miesiac)%>%  
   summarize(WyswietleniaHinduizm = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
-  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")
+  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")%>%
+  cbind(vecH)
 
 viewsChristianity <- tidyr::separate(PostsChristianity, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
   filter(PostTypeId ==1)%>%
   group_by(Rok, Miesiac)%>%  
   summarize(WyswietleniaChrzescjanstwo = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
-  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")
-
+  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")%>%
+  cbind(vecC)
 
 # Aplikacja webowa przedstawiająca wyniki:
 ui <- fluidPage(
