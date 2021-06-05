@@ -75,7 +75,7 @@ Rok <- c("2017",'2017', "2018","2018", "2019", "2019", "2020", "2020")
 
 data <- data.frame(Rok, Urzadzenie, LiczbaWyszukan)
 
-ggplot(data, aes(fill=Urzadzenie, y=LiczbaWyszukan, x=Rok)) +
+wykres <- ggplot(data, aes(fill=Urzadzenie, y=LiczbaWyszukan, x=Rok)) +
   geom_bar(position="stack", stat="identity") + scale_fill_manual("Urzadzenie", values = c("PlayStation" = "lightblue", "Xbox" = "darkblue"))
 
 #Pytanie 2:
@@ -140,12 +140,12 @@ Kraj <- c("Niemcy", "Niemcy", "Niemcy", "Niemcy", "Francja", "Francja", "Francja
 
 tabela <- data_frame(liczba_wyszukan, instrumenty, Kraj)
 
-wykres <- ggplot(tabela, aes(x=instrumenty, y=liczba_wyszukan, fill=Kraj)) +
+wykres1 <- ggplot(tabela, aes(x=instrumenty, y=liczba_wyszukan, fill=Kraj)) +
   geom_col(position = "dodge") +labs(y= "Liczba wyszukań") + 
   theme(legend.background = element_rect(fill="white",
    size=0.5, linetype="solid", 
    colour ="black")) 
-ggplotly(wykres)
+ggplotly(wykres1)
 
   
 
@@ -158,7 +158,7 @@ vecB <- rep("Buddyzm", 8)
 vecI <- rep("Islam", 10)
 vecJ <- rep("Judaizm", 13)
 vecH <- rep("Hinduizm", 8)
-vecC <- rep("Chrzescjanizm", 11)
+vecC <- rep("Chrzescjaństwo", 11)
 
 viewsBuddhism <- tidyr::separate(PostsBuddhism, CreationDate, c('Rok',"theRest"), sep = "-",remove = FALSE)%>%
   filter(PostTypeId == 1)%>%
@@ -195,6 +195,12 @@ Wyswietlenia <- full_join(viewsBuddhism, viewsIslam) %>%
   full_join(viewsHinduism) %>% 
   full_join(viewsJudaism)
 
+wykres2 <- ggplot(Wyswietlenia, aes(x=Rok, y=Wyswietlenia, color=Religia, group = Religia)) +
+  geom_line(size = 1) +
+  ggtitle("Liczba wyświetleń postów na temat poszczególnych religii") +
+  scale_y_continuous(labels = scales::comma) 
+wykres2 <- ggplotly(wykres2)
+
 
 
 
@@ -221,11 +227,24 @@ ui <- fluidPage(
   ),
   mainPanel(
     width = 15,
-    plotOutput("plot")
+    plotOutput("plot"),
+    plotOutput("plot1"), 
+    plotOutput("plot2")
   )
 )
 
 
-server <- function(input, output) {}
+
+server <- function(input, output) {
+output$plot = renderPlot({
+    wykres
+  })
+  output$plot1 = renderPlot({
+    wykres1
+  })
+  output$plot2 = renderPlot({
+    wykres2
+  })
+}
 
 shinyApp(ui = ui, server = server)
