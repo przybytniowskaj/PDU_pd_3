@@ -154,45 +154,40 @@ ggplotly(wykres)
 # Jak zmieniała sie popularnosc/suma liczby wyswietlen postow dotyczacych wybranych religii 
 # na przestrzeni lat 2014-2021
 
-vecB <- rep("Buddyzm", 81)
-vecI <- rep("Islam", 105)
-vecJ <- rep("Judaizm", 135)
-vecH <- rep("Hinduizm", 81)
-vecC <- rep("Chrzescjanizm", 115)
+vecB <- rep("Buddyzm", 8)
+vecI <- rep("Islam", 10)
+vecJ <- rep("Judaizm", 13)
+vecH <- rep("Hinduizm", 8)
+vecC <- rep("Chrzescjanizm", 11)
 
-viewsBuddhism <- tidyr::separate(PostsBuddhism, CreationDate, c('Rok', 'Miesiac', "theRest"), sep = "-",remove = FALSE)%>%
+viewsBuddhism <- tidyr::separate(PostsBuddhism, CreationDate, c('Rok',"theRest"), sep = "-",remove = FALSE)%>%
   filter(PostTypeId == 1)%>%
-  group_by(Rok, Miesiac)%>%  
-  summarize(Wyswietlenia = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
-  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")%>%
+  group_by(Rok)%>%  
+  summarize(Wyswietlenia = sum(ViewCount, na.rm = TRUE))%>%
   mutate(Religia = vecB)
 
-viewsIslam <- tidyr::separate(PostsIslam, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
+viewsIslam <- tidyr::separate(PostsIslam, CreationDate, c('Rok', 'theRest'), sep = "-",remove = FALSE)%>%
   filter(PostTypeId == 1)%>%
-  group_by(Rok, Miesiac)%>%  
-  summarize(Wyswietlenia = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
-  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")%>%
+  group_by(Rok)%>%  
+  summarize(Wyswietlenia = sum(ViewCount, na.rm = TRUE))%>%
   mutate(Religia = vecI)
 
-viewsJudaism <- tidyr::separate(PostsJudaism, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
+viewsJudaism <- tidyr::separate(PostsJudaism, CreationDate, c('Rok', 'theRest'), sep = "-",remove = FALSE)%>%
   filter(PostTypeId ==1)%>%
-  group_by(Rok, Miesiac)%>%  
-  summarize(Wyswietlenia = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
-  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")%>%
+  group_by(Rok)%>%  
+  summarize(Wyswietlenia = sum(ViewCount, na.rm = TRUE))%>%
   mutate(Religia = vecJ)
 
-viewsHinduism <- tidyr::separate(PostsHinduism, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
+viewsHinduism <- tidyr::separate(PostsHinduism, CreationDate, c('Rok','theRest'), sep = "-",remove = FALSE)%>%
   filter(PostTypeId ==1)%>%
-  group_by(Rok, Miesiac)%>%  
-  summarize(Wyswietlenia = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
-  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")%>%
+  group_by(Rok)%>%  
+  summarize(Wyswietlenia = sum(ViewCount, na.rm = TRUE))%>%
   mutate(Religia = vecH)
 
-viewsChristianity <- tidyr::separate(PostsChristianity, CreationDate, c('Rok', 'Miesiac', 'theRest'), sep = "-",remove = FALSE)%>%
+viewsChristianity <- tidyr::separate(PostsChristianity, CreationDate, c('Rok','theRest'), sep = "-",remove = FALSE)%>%
   filter(PostTypeId ==1)%>%
-  group_by(Rok, Miesiac)%>%  
-  summarize(Wyswietlenia = sum(ViewCount, na.rm = TRUE), .groups = 'drop')%>%
-  unite("Miesiac-Rok",Miesiac, Rok, sep = "-")%>%
+  group_by(Rok)%>%  
+  summarize(Wyswietlenia = sum(ViewCount, na.rm = TRUE))%>%
   mutate(Religia = vecC)
 
 Wyswietlenia <- full_join(viewsBuddhism, viewsIslam) %>% 
