@@ -258,23 +258,23 @@ server <- function(input, output) {
   output$plot <- renderPlot(dataInput())
   output$text <- renderUI({ 
     if (dataInput2()== 1){
-      x0 <- "1. Z pliku gaming.stackexchange.com wybieramy Tabele PostHistory i Posts" 
-     x1 <- "2. Usuwamy posty, które były zgłoszone przez użytkowników jako nieodpowiednie (z tabeli PostHistory)"
-      x2 <- "3. Łączymy tabelę powstałą w punkcie 2. z Posts"
-      x3 <- "4. Zostawiamy tylko pytania, czyli wiersze których PostTypeId jest równe 1"
-      x4 <- "5. Rozdzielamy posty ze wzgledu na rok publikacji oraz ze względu na dotyczący ich temat (Xbox/PlayStation)"
-      x5 <- "6. Sumujemy liczbę postów ww grupach"
+      x0 <- "1. Z pliku gaming.stackexchange.com wybieramy Tabele PostHistory i Posts." 
+     x1 <- "2. Usuwamy posty, które były zgłoszone przez użytkowników jako nieodpowiednie (z tabeli PostHistory)."
+      x2 <- "3. Łączymy tabelę powstałą w punkcie 2. z Posts."
+      x3 <- "4. Zostawiamy tylko pytania, czyli wiersze których PostTypeId jest równe 1."
+      x4 <- "5. Rozdzielamy posty ze wzgledu na rok publikacji oraz ze względu na dotyczący ich temat (Xbox/PlayStation)."
+      x5 <- "6. Sumujemy liczbę postów ww grupach."
       HTML(paste(x0,x1, x2,x3, x4, x5, sep = '<br/>'))
     }else if (dataInput2()== 2){
-      x1 <- "Z portalu music.stackexchange.com wybieramy Tabele Users i Posts" 
-      x2 <- "Wybieramy tylko te wiersze, które mają Score>0."
-      x3 <- "Liczymy sume postów i komentarzy na temat pianina, skrzypiec, gitary i bębnów w Niemczech, następnie we Francji."
-      x4 <- "Tworzymy tabele z wynikami z Niemiec i Francji, a następnie robimy z niej wykres. Dodajemy tytuł i uwydatniamy legendę dodając jej czarną ramke."
+      x1 <- "1. Z portalu music.stackexchange.com wybieramy Tabele Users i Posts" 
+      x2 <- "2. Wybieramy tylko te wiersze, które mają Score>0."
+      x3 <- "3. Liczymy sume postów i komentarzy na temat pianina, skrzypiec, gitary i bębnów w Niemczech, następnie we Francji."
+      x4 <- "4. Tworzymy tabele z wynikami z Niemiec i Francji, a następnie robimy z niej wykres. Dodajemy tytuł i uwydatniamy legendę dodając jej czarną ramke."
       HTML(paste(x1, x2, x3, x4, sep = '<br/>'))
     }else if(dataInput2()== 3){
-      x1 <- "Wybieramy tabele Posts  z  5 portali o konkretnych religiach."
-      x2 <- "Liczymy liczebność wyświetleń w każdym portalu, przy okazji grupując je w zależności od roku opublikowania postu."
-      x3 <- "Łączymy powstałe dane w jedną tabele i tworzymy z niej wykres, dodaje jego tytuł."
+      x1 <- "1. Wybieramy tabele Posts z 5-ciu portali o konkretnych religiach."
+      x2 <- "2. Liczymy liczebność wyświetleń w każdym portalu, przy okazji grupując je w zależności od roku opublikowania postu."
+      x3 <- "3. Łączymy powstałe dane w jedną tabele i tworzymy z niej wykres, dodaje jego tytuł."
       HTML(paste(x1, x2, x3, sep = '<br/>'))
     }else {
       HTML(paste(" "))
