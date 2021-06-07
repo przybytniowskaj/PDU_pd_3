@@ -258,9 +258,13 @@ server <- function(input, output) {
   output$plot <- renderPlot(dataInput())
   output$text <- renderUI({ 
     if (dataInput2()== 1){
-      x1 <- "bla"
-      x2 <- "bla"
-      HTML(paste(x1, x2, sep = '<br/>'))
+      x0 <- "1. Z pliku gaming.stackexchange.com wybieramy Tabele PostHistory i Posts" 
+     x1 <- "2. Usuwamy posty, które były zgłoszone przez użytkowników jako nieodpowiednie (z tabeli PostHistory)"
+      x2 <- "3. Łączymy tabelę powstałą w punkcie 2. z Posts"
+      x3 <- "4. Zostawiamy tylko pytania, czyli wiersze których PostTypeId jest równe 1"
+      x4 <- "5. Rozdzielamy posty ze wzgledu na rok publikacji oraz ze względu na dotyczący ich temat (Xbox/PlayStation)"
+      x5 <- "6. Sumujemy liczbę postów ww grupach"
+      HTML(paste(x0,x1, x2,x3, x4, x5, sep = '<br/>'))
     }else if (dataInput2()== 2){
       x1 <- "Z portalu music.stackexchange.com wybieramy Tabele Users i Posts" 
       x2 <- "Wybieramy tylko te wiersze, które mają Score>0."
