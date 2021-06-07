@@ -5,6 +5,7 @@ library(ggplot2)
 library(wesanderson)
 library(tidyr)
 library(plotly)
+library(shiny)
 
 if ( options()$stringsAsFactors )
   options(stringsAsFactors=FALSE)
