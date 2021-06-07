@@ -262,13 +262,16 @@ server <- function(input, output) {
       x2 <- "bla"
       HTML(paste(x1, x2, sep = '<br/>'))
     }else if (dataInput2()== 2){
-      x1 <- "bl2a"
-      x2 <- "bla2"
-      HTML(paste(x1, x2, sep = '<br/>'))
+      x1 <- "Z portalu music.stackexchange.com wybieramy Tabele Users i Posts" 
+      x2 <- "Wybieramy tylko te wiersze, które mają Score>0."
+      x3 <- "Liczymy sume postów i komentarzy na temat pianina, skrzypiec, gitary i bębnów w Niemczech, następnie we Francji."
+      x4 <- "Tworzymy tabele z wynikami z Niemiec i Francji, a następnie robimy z niej wykres. Dodajemy tytuł i uwydatniamy legendę dodając jej czarną ramke."
+      HTML(paste(x1, x2, x3, x4, sep = '<br/>'))
     }else if(dataInput2()== 3){
-      x1 <- "bla3"
-      x2 <- "bla3"
-      HTML(paste(x1, x2, sep = '<br/>'))
+      x1 <- "Wybieramy tabele Posts  z  5 portali o konkretnych religiach."
+      x2 <- "Liczymy liczebność wyświetleń w każdym portalu, przy okazji grupując je w zależności od roku opublikowania postu."
+      x3 <- "Łączymy powstałe dane w jedną tabele i tworzymy z niej wykres, dodaje jego tytuł."
+      HTML(paste(x1, x2, x3, sep = '<br/>'))
     }else {
       HTML(paste(" "))
     }
