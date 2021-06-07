@@ -80,7 +80,7 @@ wykres <- ggplot(data, aes(fill=Urzadzenie, y=LiczbaWyszukan, x=Rok)) +
   geom_bar(position="stack", stat="identity") + scale_fill_manual("Urzadzenie", values = c("PlayStation" = "lightblue", "Xbox" = "darkblue"))
 
 #Pytanie 2:
-# Wykres przedstawiający ilość postów o konkretnych instrumentach (pianino, skrzypce, gitara, bębny) w Niemczech i Francji
+# Wykres przedstawiający ilość postów o konkretnych instrumentach (pianino, skrzypce, gitara, bębny) w Niemczech i Francji, które mają Score większe niż 0.
 
 tab1 <- Posts %>% filter(Score > 0)
 tab2 <- Users  %>% 
