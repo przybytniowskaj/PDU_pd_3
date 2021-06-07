@@ -238,7 +238,8 @@ ui <- fluidPage(
   mainPanel(
     width = 15,
     plotOutput("plot"),
-    textOutput("text")
+    # textOutput("text")
+    htmlOutput("text")
   )
 )
 
@@ -249,12 +250,29 @@ server <- function(input, output) {
     if ("Pytanie 3" %in% input$selectBox)return(wykres2)
   })
   dataInput2 <- reactive({ 
-    if ("Pytanie 1" %in% input$selectBox)return("list")
-    if ("Pytanie 2" %in% input$selectBox)return("hej1")
-    if ("Pytanie 3" %in% input$selectBox)return("hej2")
+    if ("Pytanie 1" %in% input$selectBox)return(1)
+    if ("Pytanie 2" %in% input$selectBox)return(2)
+    if ("Pytanie 3" %in% input$selectBox)return(3)
+    if ("Wybierz numer pytania" %in% input$selectBox)return(4)
   })
   output$plot <- renderPlot(dataInput())
-  output$text <- renderPrint(dataInput2())
+  output$text <- renderUI({ 
+    if (dataInput2()== 1){
+      x1 <- "bla"
+      x2 <- "bla"
+      HTML(paste(x1, x2, sep = '<br/>'))
+    }else if (dataInput2()== 2){
+      x1 <- "bl2a"
+      x2 <- "bla2"
+      HTML(paste(x1, x2, sep = '<br/>'))
+    }else if(dataInput2()== 3){
+      x1 <- "bla3"
+      x2 <- "bla3"
+      HTML(paste(x1, x2, sep = '<br/>'))
+    }else {
+      HTML(paste(" "))
+    }
+    })
 }
 
 shinyApp(ui = ui, server = server)
