@@ -6,18 +6,19 @@ library(wesanderson)
 library(tidyr)
 library(plotly)
 library(shiny)
+library(ggiraph)
 
 if ( options()$stringsAsFactors )
   options(stringsAsFactors=FALSE)
 
 # Ramki danych do pytania 1:
-Posts <- read.csv("gaming.stackexchange.com/Posts.xml.csv")
+PostsGaming <- read.csv("gaming.stackexchange.com/Posts.xml.csv")
 PostHistory <- read.csv("gaming.stackexchange.com/PostHistory.xml.csv")
 
 #Ramki danych do pytania 2:
-Users<-read.csv("Mus/Users.xml.csv")
-Posts<-read.csv("Mus/Posts.xml.csv")
-  
+UsersMusic<-read.csv("Mus/Users.xml.csv")
+PostsMusic<-read.csv("Mus/Posts.xml.csv")
+
 # Ramki danych do pytania 3:
 PostsBuddhism <- read.csv("buddhism.stackexchange.com/Posts.xml.csv")
 PostsIslam <- read.csv("islam.stackexchange.com/Posts.xml.csv")
@@ -31,16 +32,16 @@ PostsChristianity <- read.csv("christianity.stackexchange.com/Posts.xml.csv")
 
 not_deleted <- PostHistory %>%
   filter(PostHistoryTypeId != 12)%>%
-  inner_join(Posts, by = c("PostId" = "Id"))%>%
+  inner_join(PostsGaming, by = c("PostId" = "Id"))%>%
   distinct(PostId, .keep_all = TRUE)
 
 xbox_questions <- filter(not_deleted, str_detect(Tags, 'xbox'))
-  
+
 ps_questions <- filter(not_deleted, str_detect(Tags, 'ps1') | str_detect(Tags, "ps2")| str_detect(Tags, "ps3") | str_detect(Tags, "ps4") | str_detect(Tags, "ps3"))
 
 xbox2017 <- as.integer(
-filter(xbox_questions, str_detect(CreationDate.y, "2017"))%>%
-  count())
+  filter(xbox_questions, str_detect(CreationDate.y, "2017"))%>%
+    count())
 
 xbox2018 <- as.integer(
   filter(xbox_questions, str_detect(CreationDate.y, "2018"))%>%
@@ -77,60 +78,67 @@ Rok <- c("2017",'2017', "2018","2018", "2019", "2019", "2020", "2020")
 data <- data.frame(Rok, Urzadzenie, LiczbaWyszukan)
 
 wykres <- ggplot(data, aes(fill=Urzadzenie, y=LiczbaWyszukan, x=Rok)) +
-  geom_bar(position="stack", stat="identity") + scale_fill_manual("Urzadzenie", values = c("PlayStation" = "lightblue", "Xbox" = "darkblue"))
+  geom_bar(position="stack", stat="identity") + 
+  scale_fill_manual("Urzadzenie", values = c("PlayStation" = "lightblue", "Xbox" = "darkblue")) +
+  ggtitle("Liczba postów dotyczacych Xboxa i PlayStation w ostatnich latach")
+
+graph <- ggplot(data, aes(fill=Urzadzenie, tooltip = LiczbaWyszukan, y=LiczbaWyszukan, x=Rok)) +
+    geom_bar_interactive(position="stack", stat="identity") + scale_fill_manual_interactive("Urzadzenie", values = c("PlayStation" = "lightblue", "Xbox" = "darkblue"))
+# if(interactive())girafe(ggobj = graph)
+# ^ sposób na uruchomienie interaktywności wykresu
 
 #Pytanie 2:
-# Wykres przedstawiający ilość postów o konkretnych instrumentach (pianino, skrzypce, gitara, bębny) w Niemczech i Francji, które mają Score większe niż 0.
+# Wykres przedstawiający ilość postów o konkretnych instrumentach (pianino, skrzypce, gitara, bębny) w Niemczech i Francji
 
-tab1 <- Posts %>% filter(Score > 0)
-tab2 <- Users  %>% 
-        filter(str_detect(Location, "Germany")) %>% 
-        select("Id")
-tab3 <- Users  %>% 
+tab1 <- PostsMusic %>% filter(Score > 0)
+tab2 <- UsersMusic  %>% 
+  filter(str_detect(Location, "Germany")) %>% 
+  select("Id")
+tab3 <- UsersMusic  %>% 
   filter(str_detect(Location, "France")) %>% 
   select("Id")
 
 piano <- (tab1 %>%
-  filter(str_detect(Tags, "piano")) %>%
-  inner_join(tab2, by = c("OwnerUserId" = "Id")) %>%
-  tally())[1, 1]
- 
+            filter(str_detect(Tags, "piano")) %>%
+            inner_join(tab2, by = c("OwnerUserId" = "Id")) %>%
+            tally())[1, 1]
+
 
 violin <- (tab1 %>%
-  filter(str_detect(Tags, "violin")) %>%
-  inner_join(tab2, by = c("OwnerUserId" = "Id")) %>%
-  tally())[1, 1]
+             filter(str_detect(Tags, "violin")) %>%
+             inner_join(tab2, by = c("OwnerUserId" = "Id")) %>%
+             tally())[1, 1]
 
 guitar <- (tab1 %>%
-  filter(str_detect(Tags, "guitar")) %>%
-  inner_join(tab2, by = c("OwnerUserId" = "Id")) %>%
-  tally())[1, 1]
+             filter(str_detect(Tags, "guitar")) %>%
+             inner_join(tab2, by = c("OwnerUserId" = "Id")) %>%
+             tally())[1, 1]
 
 drums <- (tab1 %>%
-  filter(str_detect(Tags, "drums")) %>%
-  inner_join(tab2, by = c("OwnerUserId" = "Id")) %>%
-  tally())[1, 1]
+            filter(str_detect(Tags, "drums")) %>%
+            inner_join(tab2, by = c("OwnerUserId" = "Id")) %>%
+            tally())[1, 1]
 
 piano2 <- (tab1 %>%
-  filter(str_detect(Tags, "piano")) %>%
-  inner_join(tab3, by = c("OwnerUserId" = "Id")) %>%
-  tally())[1, 1]
+             filter(str_detect(Tags, "piano")) %>%
+             inner_join(tab3, by = c("OwnerUserId" = "Id")) %>%
+             tally())[1, 1]
 
 
 violin2 <- (tab1 %>%
-  filter(str_detect(Tags, "violin")) %>%
-  inner_join(tab3, by = c("OwnerUserId" = "Id")) %>%
-  tally())[1, 1]
+              filter(str_detect(Tags, "violin")) %>%
+              inner_join(tab3, by = c("OwnerUserId" = "Id")) %>%
+              tally())[1, 1]
 
 guitar2 <- (tab1 %>%
-  filter(str_detect(Tags, "guitar")) %>%
-  inner_join(tab3, by = c("OwnerUserId" = "Id")) %>%
-  tally())[1, 1]
+              filter(str_detect(Tags, "guitar")) %>%
+              inner_join(tab3, by = c("OwnerUserId" = "Id")) %>%
+              tally())[1, 1]
 
 drums2 <- (tab1 %>%
-  filter(str_detect(Tags, "drums")) %>%
-  inner_join(tab3, by = c("OwnerUserId" = "Id")) %>%
-  tally())[1, 1]
+             filter(str_detect(Tags, "drums")) %>%
+             inner_join(tab3, by = c("OwnerUserId" = "Id")) %>%
+             tally())[1, 1]
 
 liczba_wyszukan <- c(piano, violin, guitar, drums, piano2, violin2, guitar2, drums2)
 
@@ -143,13 +151,13 @@ tabela <- data_frame(liczba_wyszukan, instrumenty, Kraj)
 
 wykres1 <- ggplot(tabela, aes(x=instrumenty, y=liczba_wyszukan, fill=Kraj)) +
   geom_col(position = "dodge") +labs(y= "Liczba wyszukań") + 
+  ggtitle("Liczba postów na na temat poszczególnych instrumentów muzycznych") +
   theme(legend.background = element_rect(fill="white",
-   size=0.5, linetype="solid", 
-   colour ="black")) +
-  ggtitle("Liczba postów na temat instrumentów w Niemczech i Francji")
-ggplotly(wykres1)
+                                         size=0.5, linetype="solid", 
+                                         colour ="black")) 
+# ggplotly(wykres1)
+# ^ sposób na uruchomienie interaktywności wykresu
 
-  
 
 
 #Pytanie 3:
@@ -201,12 +209,11 @@ wykres2 <- ggplot(Wyswietlenia, aes(x=Rok, y=Wyswietlenia, color=Religia, group 
   geom_line(size = 1) +
   ggtitle("Liczba wyświetleń postów na temat poszczególnych religii") +
   scale_y_continuous(labels = scales::comma) 
-wykres2 <- ggplotly(wykres2)
-
-
-
+# wykres2 <- ggplotly(wykres2)
+# ^ sposób na uruchomienie interaktywności wykresu
 
 # Aplikacja webowa przedstawiająca wyniki:
+
 ui <- fluidPage(
   
   titlePanel("Praca domowa nr 3"),
@@ -230,7 +237,7 @@ ui <- fluidPage(
   ),
   mainPanel(
     width = 15,
-   plotOutput("plot"),
+    plotOutput("plot"),
     textOutput("text")
   )
 )
@@ -242,12 +249,13 @@ server <- function(input, output) {
     if ("Pytanie 3" %in% input$selectBox)return(wykres2)
   })
   dataInput2 <- reactive({ 
-    if ("Pytanie 1" %in% input$selectBox)return("hej")
+    if ("Pytanie 1" %in% input$selectBox)return("list")
     if ("Pytanie 2" %in% input$selectBox)return("hej1")
     if ("Pytanie 3" %in% input$selectBox)return("hej2")
   })
-  output$plot <- renderPlot(print(dataInput()))
-  output$text <- renderText(print(dataInput2()))
+  output$plot <- renderPlot(dataInput())
+  output$text <- renderPrint(dataInput2())
 }
 
 shinyApp(ui = ui, server = server)
+
