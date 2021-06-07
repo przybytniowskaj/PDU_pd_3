@@ -209,43 +209,39 @@ wykres2 <- ggplotly(wykres2)
 ui <- fluidPage(
   
   titlePanel("Praca domowa nr 3"),
-
+  
   sidebarLayout(
     sidebarPanel(
-          width = 7,
-          height = 5,
-          h4("Wykonały: Maja Andrzejczuk i Julia Przybytniowska"),
-          h6("20.05.2021 - 5.06.2021")
-        ),
+      width = 7,
+      height = 5,
+      h4("Wykonały: Maja Andrzejczuk i Julia Przybytniowska"),
+      h6("20.05.2021 - 5.06.2021")
+    ),
     column(3,
            selectInput("selectBox",
                        h3('Pytanie: '),
-                       choices = list("Pytanie 1" = 1,
-                                      "Pytanie 2" = 2,
-                                      "Pytanie 3" = 3),
-                       selected = 1)
-           )
+                       choices = list("Wybierz numer pytania",
+                                      "Pytanie 1",
+                                      "Pytanie 2",
+                                      "Pytanie 3"),
+                       selected = "Wybierz numer pytania")
+    )
   ),
   mainPanel(
     width = 15,
-    plotOutput("plot"),
-    plotOutput("plot1"), 
-    plotOutput("plot2")
+    plotOutput("plot")
   )
 )
 
-
-
 server <- function(input, output) {
-output$plot = renderPlot({
-    wykres
+  dataInput <- reactive({ 
+    if ("Pytanie 1" %in% input$selectBox)return(wykres)
+    if ("Pytanie 2" %in% input$selectBox)return(wykres1)
+    if ("Pytanie 3" %in% input$selectBox)return(wykres2)
   })
-  output$plot1 = renderPlot({
-    wykres1
-  })
-  output$plot2 = renderPlot({
-    wykres2
-  })
+  
+  output$plot <- renderPlot(print(dataInput()))
 }
 
 shinyApp(ui = ui, server = server)
+
