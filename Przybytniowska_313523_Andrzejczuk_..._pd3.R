@@ -145,7 +145,8 @@ wykres1 <- ggplot(tabela, aes(x=instrumenty, y=liczba_wyszukan, fill=Kraj)) +
   geom_col(position = "dodge") +labs(y= "Liczba wyszukań") + 
   theme(legend.background = element_rect(fill="white",
    size=0.5, linetype="solid", 
-   colour ="black")) 
+   colour ="black")) +
+  ggtitle("Liczba postów na temat instrumentów w Niemczech i Francji")
 ggplotly(wykres1)
 
   
@@ -229,19 +230,24 @@ ui <- fluidPage(
   ),
   mainPanel(
     width = 15,
-    plotOutput("plot")
+   plotOutput("plot"),
+    textOutput("text")
   )
 )
 
 server <- function(input, output) {
   dataInput <- reactive({ 
-    if ("Pytanie 1" %in% input$selectBox)return(wykres)
+    if ("Pytanie 1" %in% input$selectBox)return(wykres )
     if ("Pytanie 2" %in% input$selectBox)return(wykres1)
     if ("Pytanie 3" %in% input$selectBox)return(wykres2)
   })
-  
+  dataInput2 <- reactive({ 
+    if ("Pytanie 1" %in% input$selectBox)return("hej")
+    if ("Pytanie 2" %in% input$selectBox)return("hej1")
+    if ("Pytanie 3" %in% input$selectBox)return("hej2")
+  })
   output$plot <- renderPlot(print(dataInput()))
+  output$text <- renderText(print(dataInput2()))
 }
 
 shinyApp(ui = ui, server = server)
-
